@@ -58,8 +58,10 @@ sub end {
 }
 
 sub execute {
-  my ($self,$sth) = @_;
-  return $sth->execute() or die $sth->errstr;
+    my ($self,$sth) = @_;
+    my $rv = $sth->execute;
+    return $rv if $rv;
+    die $sth->errstr;
 }
 
 sub null_query {

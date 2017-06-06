@@ -54,8 +54,10 @@ sub tag_url {
 
 sub execute {
   my ($self,$sth) = @_;
-
-  return $sth->execute($self->{location}) or cluck $sth->errstr;
+  my $rv = $sth->execute($self->{location});
+  return $rv if $rv;
+  cluck $sth->errstr;
+  undef;
 }
 
 sub latency_select {

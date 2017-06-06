@@ -52,7 +52,10 @@ sub meta_count_title { return "Services"; }
 
 sub execute {
   my ($self,$sth) = @_;
-  return $sth->execute($self->{tag}) or cluck $sth->errstr;
+  my $rv = $sth->execute($self->{tag});
+  return $rv if $rv;
+  cluck $sth->errstr;
+  undef;
 }
 
 sub latency_select {
