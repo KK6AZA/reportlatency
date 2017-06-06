@@ -3,6 +3,7 @@
 # Test ReportLatency::Store.pm
 #
 # Copyright 2013,2014 Google Inc. All Rights Reserved.
+# Copyright 2017 Drake Diedrich. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -68,7 +69,7 @@ ok($dbh->do(q{
 
 
 my $location_html = $view->location_html('office.google.com.');
-is($tidy->parse('office',$location_html), undef,
+ok($tidy->parse('office',$location_html),
    'tidy location_html(office.google.com)');
 
 for my $message ( $tidy->messages ) {

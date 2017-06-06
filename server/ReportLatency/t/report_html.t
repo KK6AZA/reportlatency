@@ -3,6 +3,7 @@
 # Test ReportLatency::Store.pm
 #
 # Copyright 2013,2014 Google Inc. All Rights Reserved.
+# Copyright 2017 Drake Diedrich. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -61,7 +62,7 @@ my $qobj = new ReportLatency::Summary($store,$store->db_timestamp(time-300),
 my $summary_html = $view->report_html($qobj);
 
 my $tidy = new HTML::Tidy;
-is($tidy->parse('summary_html',$summary_html), undef, 'summary.html');
+ok($tidy->parse('summary_html',$summary_html), 'summary.html');
 for my $message ( $tidy->messages ) {
   print $message->as_string . "\n";
 }
