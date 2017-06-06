@@ -381,7 +381,7 @@ $twostyle
 <h1> ReportLatency $title </h1>
 $image_banner
 
-<table class="alternate" summary="Latency report for all services by tag">
+<table class="alternate">
 $tag_header
 EOF
 
@@ -420,7 +420,7 @@ EOF
     print $io <<EOF;
 <h2> Latency By Location </h2>
 
-<table class="alternate" summary="Latency report for all services by location">
+<table class="alternate">
 $location_header
 EOF
 
@@ -447,7 +447,7 @@ EOF
 <h2> Client Summary </h2>
     <div id="left_column">
 <img src="${image_prefix}useragents.png" alt="user_agent distribution over time"><br>
-      <table class="alternate" summary="Distribution of User Agents">
+      <table class="alternate">
         <tr> <th>User Agent</th> <th>Uploads</th> </tr>
 EOF
 
@@ -465,7 +465,7 @@ EOF
     </div>
     <div id="right_column">
 <img src="${image_prefix}extensions.png" alt="Distribution of User Agents over time"><br>
-      <table class="alternate" summary="Distribution of User Agents (browsers)">
+      <table class="alternate">
         <tr> <th>Extension Version</th> <th>Uploads</th> </tr>
 EOF
 
@@ -547,7 +547,7 @@ $twostyle
 
 $image_banner
 
-<table class="alternate" summary="Latency report for all services at $title">
+<table class="alternate">
 <tr>
  <th colspan=2> Service </th>
 $header_1
