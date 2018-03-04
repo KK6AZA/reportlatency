@@ -312,7 +312,8 @@ sub parse_json {
   my ($self,$q) = @_;
 
   my $json = $q->param('POSTDATA');
-
+  print STDERR "POSTDATA = " . $json . "\n";
+  
   my $location =
     $self->aggregate_remote_address($ENV{'REMOTE_ADDR'},
 				    $ENV{'HTTP_X_FORWARDED_FOR'});
@@ -324,7 +325,7 @@ sub parse_json {
   eval {
      $obj = decode_json $json;
   } or do {
-    return $self->_error("unimplemented","parse_json()");
+    return $self->_error("decode_json unimplemented","parse_json($json)\n");
   };
 
   my $options = $self->option_bits($obj->{options});

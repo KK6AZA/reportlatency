@@ -1,4 +1,5 @@
 # Copyright 2013 Google Inc. All Rights Reserved.
+# Copyright 2017 Drake Diedrich  All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGETS=eventPage.js options.js ReportLatency.zip
+TARGETS=eventPage.js options.js ReportLatency.zip ReportLatency.xpi
 
 SHIP=manifest.json icon128.png options.html $(TARGETS)
 
@@ -36,6 +37,9 @@ options.js: globals.js $(GLOBAL_DEFAULTS) $(OPTION_SOURCE)
 
 ReportLatency.zip: $(SHIP) ship.txt
 	cd .. ; zip ReportLatency/$@ `cat ReportLatency/ship.txt`
+
+ReportLatency.xpi: install.rdf manifest.json icon128.png eventPage.js options.js options.html
+	zip $@ $^
 
 clean:
 	rm -f $(TARGETS) ReportLatency.zip
