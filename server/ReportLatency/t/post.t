@@ -3,6 +3,7 @@
 # Test ReportLatency::Store.pm post()
 #
 # Copyright 2013,2014 Google Inc. All Rights Reserved.
+# Copyright 2018 Drake Diedrich.  All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +18,12 @@
 # limitations under the License.
 
 use strict;
+use warnings;
 use DBI;
-use CGI;
+use CGI qw/ -utf8 /;
 use IO::String;
 use File::Temp qw(tempfile tempdir);
-use Test::More tests => 21;
+use Test::More tests => 22;
 
 BEGIN { use lib '..'; }
 
@@ -49,38 +51,17 @@ $ENV{'REQUEST_METHOD'} = 'POST';
 $ENV{'HTTP_USER_AGENT'} = $0;
 $ENV{'CONTENT_TYPE'} = 'application/json';
 
-my $postdata = new IO::String();
-print $postdata <<EOF;
-{"version":"1.1.0",
- "options":["default_as_org"],
- "tz":"PST",
- "services":{
-   "w3.org":{
-     "w3.org":{
-       "nreq":{
-         "m100":1,
-         "m500":2,
-         "m1000":1,
-         "count":4,
-         "total":461.09619140625},
-       "request":{
-         "count":1,
-         "total":333.3},
-       "ureq":{
-         "m10000":1,
-         "count":2,
-         "total":64000},
-       "nav":{
-         "m1000":1,
-         "count":1,
-         "total":900}}}}}
+my $poststring = <<EOF;
+{"version":"1.1.0", "options":["default_as_org"], "tz":"PST", "services":{ "w3.org":{ "w3.org":{ "nreq":{ "m100":1, "m500":2, "m1000":1, "count":4, "total":461.09619140625}, "request":{ "count":1, "total":333.3}, "ureq":{ "m10000":1, "count":2, "total":64000}, "nav":{ "m1000":1, "count":1, "total":900}}}}}
 EOF
-$postdata->setpos(0);
-*STDIN = $postdata;
 
-my $q = new CGI;
+my $postdata = new IO::String($poststring);
+$postdata->setpos(0);
+
+my $q = new CGI($postdata);
 
 is($q->request_method(),'POST','request_method');
+is($q->content_type(),'application/json','content-type');
 
 
 ok($store->post($q),"post()");

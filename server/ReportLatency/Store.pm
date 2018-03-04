@@ -1,4 +1,5 @@
 # Copyright 2013,2014 Google Inc. All Rights Reserved.
+# Copyright 2018 Drake Diedrich.  All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -312,7 +313,6 @@ sub parse_json {
   my ($self,$q) = @_;
 
   my $json = $q->param('POSTDATA');
-  print STDERR "POSTDATA = " . $json . "\n";
   
   my $location =
     $self->aggregate_remote_address($ENV{'REMOTE_ADDR'},
@@ -322,11 +322,7 @@ sub parse_json {
   my $dbh = $self->{dbh};
 
   my $obj;
-  eval {
-     $obj = decode_json $json;
-  } or do {
-    return $self->_error("decode_json unimplemented","parse_json($json)\n");
-  };
+  $obj = JSON::decode_json $json;
 
   my $options = $self->option_bits($obj->{options});
   $obj->{options} = $options;
