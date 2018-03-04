@@ -2,8 +2,10 @@ Source: reportlatency
 Section: admin
 Priority: extra
 Maintainer: Drake Diedrich <dld@debian.org>
-Build-Depends: debhelper (>= 9.0.0), libhtml-scrubber-perl, libhtml-tidy-perl, libmath-round-perl, libregexp-common-perl,, libdate-calc-perl, libgd-graph-perl
-Standards-Version: 3.9.3
+Build-Depends: debhelper (>= 9.0.0), libhtml-scrubber-perl, libhtml-tidy-perl,
+ libmath-round-perl, libregexp-common-perl, libdate-calc-perl,
+ libgd-graph-perl, libcgi-pm-perl, libjson-perl, libio-string-perl
+Standards-Version: 4.1.3
 Homepage: https://code.google.com/p/reportlatency
 
 Package: reportlatency
@@ -13,8 +15,8 @@ Depends: ${misc:Depends}, ${perl:Depends},
  libgd-graph-perl,
  libhtml-scrubber-perl,
  libmath-round-perl, libnet-dns-perl,
- libregexp-common-perl, liburi-perl, sqlite3,
- apache2 | httpd
+ libregexp-common-perl, liburi-perl, sqlite3, libcgi-pm-perl,
+ libio-string-perl, apache2 | httpd
 Description: Receive ReportLatency browser reports and generate summaries
  CGI, batch, and SQL schema of a standalone service to receive latency posts
  from a Chrome browser extension and generate graphs and tables of the

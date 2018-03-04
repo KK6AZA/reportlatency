@@ -1,3 +1,10 @@
+reportlatency (1.6.7) unstable; urgency=medium
+
+  * update tests to pass
+  * more dependencies
+
+ -- Drake Diedrich <dld@debian.org>  Sun, 04 Mar 2018 01:02:43 -0800
+
 reportlatency (1.6.6) precise; urgency=low
 
   * Report fixes
