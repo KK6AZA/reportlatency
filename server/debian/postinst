@@ -57,8 +57,10 @@ case "$1" in
 	chown www-data:www-data $DBDIR
 	chown -R www-data:www-data $WWWDIR
 	a2enmod expires
-	if [ ! -e /etc/apache2/conf.d/reportlatency ] ; then
-	  ln -s ../../reportlatency/apache2.conf /etc/apache2/conf.d/reportlatency
+	a2enmod cgi
+	if [ ! -e /etc/apache2/conf-available/reportlatency.conf ] ; then
+	  ln -s ../../reportlatency/apache2.conf /etc/apache2/conf-available/reportlatency.conf
+	  a2enconf reportlatency
 	  invoke-rc.d apache2 restart 1>&2
 	fi
 	if [ ! -e $DBEXPORT ] ; then

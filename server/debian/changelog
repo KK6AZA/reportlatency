@@ -2,6 +2,7 @@ reportlatency (1.6.7) unstable; urgency=medium
 
   * update tests to pass
   * more dependencies
+  * apache conf file for reportlatency
 
  -- Drake Diedrich <dld@debian.org>  Sun, 04 Mar 2018 01:02:43 -0800
 
