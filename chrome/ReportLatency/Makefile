@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGETS=eventPage.js options.js ReportLatency.zip ReportLatency.xpi
-
-SHIP=manifest.json icon128.png options.html $(TARGETS)
+TARGETS=ReportLatency.zip ReportLatency.xpi
+GENERATED=eventPage.js options.js
+SHIP=manifest.json icon128.png eventPage.js options.js options.html
 
 OPTION_SOURCE:=$(shell ls -1 option_*.js 2>/dev/null)
 
@@ -38,9 +38,9 @@ options.js: globals.js $(GLOBAL_DEFAULTS) $(OPTION_SOURCE)
 ReportLatency.zip: $(SHIP) ship.txt
 	cd .. ; zip ReportLatency/$@ `cat ReportLatency/ship.txt`
 
-ReportLatency.xpi: install.rdf manifest.json icon128.png eventPage.js options.js options.html
+ReportLatency.xpi: install.rdf $(SHIP)
 	zip $@ $^
 
 clean:
-	rm -f $(TARGETS) ReportLatency.zip
+	rm -f $(TARGETS) $(GENERATED)
 

@@ -1,12 +1,12 @@
 {
   "name": "ReportLatency",
-  "version": "1.6.2",
+  "version": "1.9.0",
   "manifest_version": 2,
   "homepage_url": "https://code.google.com/p/reportlatency/",
   "description": "Gather latency information for web pages and report partial URLs, counts and timing information back to a server.",
   "options_page": "options.html",
   "background": {
-    "scripts": ["eventPage.js"]
+      "page": "report.html"
   },
   "icons": {"128": "icon128.png" },
   "web_accessible_resources":
