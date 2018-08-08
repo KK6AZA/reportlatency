@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Local Latency Report</title>
-    <script src="eventPage.js"></script>
+    <script src="latencytable.js"></script>
     <style type="text/css">
       table.alternate tr:nth-child(odd) td{ background-color: #CCFFCC; }
       table.alternate tr:nth-child(even) td{ background-color: #99DD99; }
@@ -32,24 +32,13 @@
     </style>
   </head>
 
-  <body>
+  <body onload="writeLatencyTable()>
     <h1>Session Latency Report</h1>
 
     <h2></h2>
       
-      <table class="alternate">
-	<tr>
-	  <th colspan=2> Session Summary </th>
-	  <th colspan=8> Navigation </th>
-	  <th colspan=8> Navigation Request </th>
-	  <th colspan=7> Update Request </th>
-	</tr>
-	<tr>
-	   <th>Name</th> <th> Services </th>
-	  <th>200</th> <th>300</th> <th>400</th> <th>500</th> <th>closed</th> <th>count</th> <th>latency</th> <th>avail</th>
-	  <th>200</th> <th>300</th> <th>400</th> <th>500</th> <th>closed</th> <th>count</th> <th>latency</th> <th>avail</th>
-	  <th>200</th> <th>300</th> <th>400</th> <th>500</th> <th>count</th> <th>latency</th> <th>avail</th>
-	</tr>
-	<tr></tr>
+    <table id="latency_table" class="alternate">
+      Original table
+    </table>
   </body>
 </html>
