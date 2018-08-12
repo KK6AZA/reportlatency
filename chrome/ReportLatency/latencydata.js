@@ -168,7 +168,7 @@ LatencyData.prototype.endNavigation = function(data) {
       if ('service' in this.tab[data.tabId]) {
 	var service = this.tab[data.tabId].service;
 	this.stats.transfer(service, this.tab[data.tabId].stat);
-	this.postLatency(service);
+	/* this.postLatency(service); */
       }
     } else {
       console.log(data.tabId + ' tabId not found in endNavigation');
@@ -261,6 +261,16 @@ LatencyData.prototype.postLatency = function(skip) {
     }
   }
   req.send(json_report);
+}
+
+/**
+ * services() list the top level services (flattened navigations)
+ * for 
+ * completed events the extension has seen to the console.
+ *
+ **/
+LatencyData.prototype.services = function() {
+    return Object.keys(this.stats.stat);
 }
 
 /**

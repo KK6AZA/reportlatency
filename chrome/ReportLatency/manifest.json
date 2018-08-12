@@ -10,11 +10,11 @@
     "persistent": true
    },
    "browser_action": {
-      "default_popup": "report.html"
+      "default_popup": "popup.html"
    },
    "icons": {"128": "icon128.png" },
   "web_accessible_resources":
-    [ "manifest.json", "icon128.png", "options.html" ],
+    [ "manifest.json", "icon128.png", "options.html", "report.html" ],
   "permissions": [
     "tabs", "webNavigation", "webRequest",
     "http://*/*", "https://*/*"

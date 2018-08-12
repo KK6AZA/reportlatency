@@ -104,7 +104,17 @@ function onUpdateAvailable(details) {
 }
 chrome.runtime.onInstalled.addListener( onUpdateAvailable );
 
+function generate_services() {
+    var services = latencyData.services();
+    logObject("generate_services()", services);
+    for (var s in services) {
+	console.log("  service " + s);
+    }
+    return services;
+}
+
 function onMessage(message, sender, sendResponse) {
+    logObject("onMessage() ", message);
   if (sender.tab) {
     if (localStorage['debug_extension'] == 'true') {
       logObject(sender.tab.url + ' sent ' + message, message);
@@ -117,7 +127,13 @@ function onMessage(message, sender, sendResponse) {
   var response;
   if (message.rpc == 'get_options') {
     response={serviceGroup: serviceGroup};
+    sendResponse(response);
+  } else if (message.rpc == 'get_services') {
+      response={services: generate_services()};
+      logObject("sending response:", response);
+    sendResponse(response);
+  } else {
+      console.log("message.rpc='" + message.rpc + "'");
   }
-  sendResponse({serviceGroup: serviceGroup});
 }
 chrome.extension.onMessage.addListener(onMessage);

@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Local Latency Report</title>
-    <script src="functions.js"></script>
     <script src="latencytable.js"></script>
     <style type="text/css">
       table.alternate tr:nth-child(odd) td{ background-color: #CCFFCC; }
@@ -33,12 +32,11 @@
     </style>
   </head>
 
-  <body>
-      
+  <body onload="writeLatencyTable()">
     <h1>Session Latency Report</h1>
 
-    <button>Reload</button><br>
- 
+    <h2></h2>
+
     <table id="latency_table" class="alternate">
     </table>
 
