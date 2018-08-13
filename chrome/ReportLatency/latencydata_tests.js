@@ -37,7 +37,7 @@ test('LatencyData.*Request', function() {
   ld.endRequest(data);
 
   var ts = ld.tab[1].stat;
-  equal(ts.count('nreq'), 2, '2 request for tab 1');
+  equal(ts.count('nreq'), 1, '1 request for tab 1');
 });
 
 test('LatencyData.*Navigation', function() {
@@ -53,11 +53,7 @@ test('LatencyData.*Navigation', function() {
 
   ld.tabRemoved(30, {});
 
-  equal(ts.count('nav'), 2, '2 navigation for tab 30');
-  equal(ts.countable('nav','tabclosed'), 0,
-		     '0 tabclosed events for tab 30');
-  equal(ld.countable('nav','tabclosed'), 0,
-	'0 global tabclosed events');
+  equal(ts.count('nav'), 1, '1 navigation for tab 30');
 
   data.timeStamp = 3000;
   data.url = 'http://host/spinsforever';
@@ -65,8 +61,6 @@ test('LatencyData.*Navigation', function() {
   ts = ld.tab[30].stat;
   equal(ts.count('nav'), 0, '0 navigation for tab 30');
   ld.tabRemoved(30, { timeStamp: 5500 });
-  equal(ld.countable('nav','tabclosed'), 1,
-	'1 tabclosed events');
 });
 
 test('LatencyData.Navigation_Request', function() {
@@ -91,73 +85,68 @@ test('LatencyData.Navigation_Request', function() {
   ld.endNavigation(navdata);
 
   var ts = ld.tab[30].stat;
-  equal(ts.count('nreq'), 2, '2 navigation request for tab 30');
+  equal(ts.count('nreq'), 1, '1 navigation request for tab 30');
   equal(ts.count('ureq'), 0, '0 update request for tab 30');
 });
 
 
 test('LatencyData.mainFrameRequestFirst', function() {
 
-  var old_default = localStorage['default_as_org'];
-  localStorage['default_as_org'] = 'true';
+    var old_default = localStorage['default_as_org'];
+    localStorage['default_as_org'] = 'true';
+    
+    var ld = new LatencyData();
 
-  var ld = new LatencyData();
+    var ndata1 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
+		   timeStamp:1000, url:'http://first.com/' };
 
-  var ndata1 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
-	       timeStamp:1000, url:'http://first.com/' };
+    ld.startNavigation(ndata1);
+ 
+    var rdata1 = { frameId:0, parentFrameId:-1, requestId:986, tabId:30,
+		   timeStamp:1002, type:'main_frame', url:'http://first.com/' };
+    ld.startRequest(rdata1);
 
-  ld.startNavigation(ndata1);
+    var rdata2 = { frameId:0, parentFrameId:-1, requestId:986, tabId:30,
+		   timeStamp:1998, type:'main_frame', url:'http://first.com/',
+		   statusCode:200, fromCache:'false' };
+    ld.endRequest(rdata2);
 
-  var rdata1 = { frameId:0, parentFrameId:-1, requestId:986, tabId:30,
-		timeStamp:1002, type:'main_frame', url:'http://first.com/' };
-  ld.startRequest(rdata1);
+    var ndata2 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
+		   timeStamp:2000, url:'http://first.com/' };
+    ld.endNavigation(ndata2);
 
-  var rdata2 = { frameId:0, parentFrameId:-1, requestId:986, tabId:30,
-		 timeStamp:1998, type:'main_frame', url:'http://first.com/',
-		 statusCode:200, fromCache:'false' };
-  ld.endRequest(rdata2);
+    var rdata3 = { frameId:0, parentFrameId:-1, requestId:987, tabId:30,
+		   timeStamp:2998, type:'main_frame', url:'http://second.com/'};
+    ld.startRequest(rdata3);
 
-  var ndata2 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
-	       timeStamp:2000, url:'http://first.com/' };
-  ld.endNavigation(ndata2);
+    var ndata3 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
+		   timeStamp:3000, url:'http://second.com/' };
+    ld.startNavigation(ndata3);
 
-  var rdata3 = { frameId:0, parentFrameId:-1, requestId:987, tabId:30,
-		 timeStamp:2998, type:'main_frame', url:'http://second.com/'};
-  ld.startRequest(rdata3);
+    var rdata4 = { frameId:0, parentFrameId:-1, requestId:987, tabId:30,
+		   timeStamp:2998, type:'main_frame', url:'http://second.com/',
+		   statusCode:200, fromCache:'false' };
+    ld.endRequest(rdata4);
 
-  var ndata3 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
-	       timeStamp:3000, url:'http://second.com/' };
-  ld.startNavigation(ndata3);
+    var ndata4 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
+		   timeStamp:4001, url:'http://second.com/' };
+    ld.endNavigation(ndata4);
 
-  var rdata4 = { frameId:0, parentFrameId:-1, requestId:987, tabId:30,
-		 timeStamp:2998, type:'main_frame', url:'http://second.com/',
-		 statusCode:200, fromCache:'false' };
-  ld.endRequest(rdata4);
-
-  var ndata4 = { frameId:0, parentFrameId:-1, processId:2999, tabId:30,
-	       timeStamp:4001, url:'http://second.com/' };
-  ld.endNavigation(ndata4);
-
-  equal(ld.stats.stat['first.com'].stat['first.com'].stat['nav'].count, 1,
-	'1 first.com/first.com nav count');
-  equal(ld.stats.stat['first.com'].stat['first.com'].stat['nav'].total, 1000,
-	'1000ms first.com/first.com nav total');
-  equal(ld.stats.stat['second.com'].stat['second.com'].stat['nav'].count, 1,
-	'1 second.com/second.com nav count');
-  equal(ld.stats.stat['second.com'].stat['second.com'].stat['nav'].total, 1001,
-	'1000ms second.com/second.com nav total');
+    equal(ld.stats.stat['first.com'].stat['first.com'].stat['nav'].count(), 1,
+	  '1 first.com/first.com nav count');
+    equal(ld.stats.stat['first.com'].stat['first.com'].stat['nav'].total(), 1000,
+	  '1000ms first.com/first.com nav total');
+    equal(ld.stats.stat['second.com'].stat['second.com'].stat['nav'].count(), 1,
+	  '1 second.com/second.com nav count');
+    equal(ld.stats.stat['second.com'].stat['second.com'].stat['nav'].total(),
+	  1001, '1000ms second.com/second.com nav total');
 
 
   var firstService = ld.stats.service('first.com');
   var secondService = ld.stats.service('second.com');
 
-  equal(firstService.stat['second.com'], undefined,'no second.com in first.com stats');
-  equal(secondService.stat['first.com'], undefined,'no first.com in second.com stats');
-
-  equal(firstService.count('nav'), 3, '3 first.com navigation countables');
-  // equal(firstService.count('nreq'), 2, '2 first.com nreq countables');
-  equal(secondService.count('nav'), 3, '3 second.com navigation countables');
-  //  equal(secondService.count('nreq'), 2, '2 second.com nreq countables');
+    equal(firstService.stat['second.com'], undefined,'no second.com in first.com stats');
+    equal(secondService.stat['first.com'], undefined,'no first.com in second.com stats');
 
   if (old_default) {
     localStorage['default_as_org'] = old_default;

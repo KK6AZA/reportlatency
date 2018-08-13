@@ -39,28 +39,10 @@ function ServiceStats() {
  *
  */
 ServiceStats.prototype.add = function(service, name, latency, delta) {
-  console.log('ServiceStats.add(' + service + ',' + name + ',' +
-	      latency + ',' + delta + ')');
   if (!this.stat[service]) {
     this.stat[service] = new NameStats();
   }
   this.stat[service].add(name, latency,  delta);
-};
-
-/**
- * Increment a countable measurement return type
- *
- * @param {string} service is the final name this stat is for
- * @param {string} name is the original request name this stat is for
- * @param {string} latency is the type of latency.
- * @param {string} delta is the new measurement to incorporate in the stat.
- *
- */
-ServiceStats.prototype.increment = function(service, name, latency, result) {
-  if (!this.stat[service]) {
-    this.stat[service] = new NameStats();
-  }
-  this.stat[service].increment(name, latency, result);
 };
 
 /**
@@ -84,11 +66,10 @@ ServiceStats.prototype.countable = function(measurement, result) {
  * @param {Object} tabStats is the source TabStats object.
  */
 ServiceStats.prototype.transfer = function(name, tabStats) {
-  if (name in this.stat) {
+    if (!(name in this.stat)) {
+	this.stat[name] = new NameStats();
+    }
     this.stat[name].transfer(tabStats);
-  } else {
-    this.stat[name] = tabStats;
-  }
 };
 
 
@@ -137,6 +118,22 @@ ServiceStats.prototype.best = function(last) {
 ServiceStats.prototype.delete = function(final) {
   delete this.stat[final];
 }
+
+/**
+ * Just the navigation data
+ *
+ **/
+ServiceStats.prototype.navigations = function() {
+    var navigations = {};
+    for (var service in this.stat) {
+	var n = this.stat[service].navigations(service);
+	logObject("ServiceStats.stat[" + service + "].navigations(" + service
+		  + ") = ", n);
+	navigations[service] = n;
+    }
+    return navigations;
+}
+
 
 /**
  *

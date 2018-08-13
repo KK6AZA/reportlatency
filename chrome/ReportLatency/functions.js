@@ -32,7 +32,9 @@
 function logObject(str, o) {
   console.log(str);
   for (var b in o) {
-    console.log('  ' + b + ':' + o[b]);
+    if (o.hasOwnProperty(b)) {
+      console.log('  ' + b + ':' + o[b]);
+    }
   }
 }
 

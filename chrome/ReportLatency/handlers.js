@@ -104,13 +104,14 @@ function onUpdateAvailable(details) {
 }
 chrome.runtime.onInstalled.addListener( onUpdateAvailable );
 
-function generate_services() {
-    var services = latencyData.services();
-    logObject("generate_services()", services);
-    for (var s in services) {
-	console.log("  service " + s);
+
+function generate_navigations() {
+    var navs = latencyData.navigations();
+    logObject("generate_navigations()", navs);
+    for (var s in navs) {
+	logObject(s + ": ", navs[s]);
     }
-    return services;
+    return navs;
 }
 
 function onMessage(message, sender, sendResponse) {
@@ -128,10 +129,10 @@ function onMessage(message, sender, sendResponse) {
   if (message.rpc == 'get_options') {
     response={serviceGroup: serviceGroup};
     sendResponse(response);
-  } else if (message.rpc == 'get_services') {
-      response={services: generate_services()};
-      logObject("sending response:", response);
-    sendResponse(response);
+  } else if (message.rpc == 'get_navigations') {
+      var navigations = generate_navigations();
+      response={navigations: navigations};
+      sendResponse(response);
   } else {
       console.log("message.rpc='" + message.rpc + "'");
   }

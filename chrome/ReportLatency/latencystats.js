@@ -43,23 +43,12 @@ LatencyStats.prototype.add = function(latency, delta) {
   if (!this.stat[latency]) {
     this.stat[latency] = new Stat();
   }
-  this.stat[latency].add(delta);
-};
-
-/**
- * Increments a countable event
- *
- * @param {string} latency is the type of latency event.
- * @param {string} result is the type of result instead of a latency
- *
- * Stats are further grouped by original and final service, but this
- * isn't always known until after collection, so not part of this object.
- */
-LatencyStats.prototype.increment = function(latency, result) {
-  if (!this.stat[latency]) {
-    this.stat[latency] = new Stat();
-  }
-  this.stat[latency].increment(result);
+    this.stat[latency].add(delta);
+    if (latency == 'nav') {
+	logObject("LatencyStats.add(" + latency + "," + delta +
+		  ") this.stat[nav] this = ",
+		  this.stat[latency]);
+    }
 };
 
 
@@ -88,15 +77,7 @@ LatencyStats.prototype.transfer = function(stats) {
 LatencyStats.prototype.count = function(measurement) {
   var count=0;
   if (measurement in this.stat) {
-    count += this.stat[measurement].count;
-    for (var countable in this.stat[measurement]) {
-      if (!(countable in Stat.prototype)) {
-	if (countable != 'count' && countable != 'total' &&
-	    countable != 'high' && countable != 'low') {
-	  count += this.stat[measurement][countable];
-	}
-      }
-    }
+      count += this.stat[measurement].count();
   }
   return count;
 };
@@ -121,9 +102,21 @@ LatencyStats.prototype.countable = function(measurement,result) {
  */
 LatencyStats.prototype.total = function(measurement) {
   if (measurement in this.stat) {
-    return this.stat[measurement].total;
+      return this.stat[measurement].total();
   }
   return 0;
+};
+
+
+/**
+ * @returns {Stat} just the navigation Stat object
+ */
+LatencyStats.prototype.navigations = function() {
+    var s = this.stat['nav'];
+    if (s) {
+	logObject("LatencyStats.navigations() = ", s);
+    }
+    return s;
 };
 
 /**

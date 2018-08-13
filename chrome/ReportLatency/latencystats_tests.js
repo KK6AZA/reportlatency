@@ -19,46 +19,37 @@
  */
 
 test('LatencyStats.add', function() {
-  var s = new LatencyStats();
+    var s = new LatencyStats();
 
-  s.add('navigation', 5);
-  equal(s.stat['navigation'].count, 1, 'single count');
-  equal(s.stat['navigation'].total, 5, 'single total');
-  equal(s.count('navigation'), 2, 'single count()');
-  equal(s.total('navigation'), 5, 'single total()');
+    s.add('navigation', 5);
+    equal(s.stat['navigation'].count(), 1, 'single count');
+    equal(s.stat['navigation'].total(), 5, 'single total');
+    equal(s.count('navigation'), 1, 'single count()');
+    equal(s.total('navigation'), 5, 'single total()');
 
-  s.add('navigation', 9);
-  equal(s.stat['navigation'].count, 2, 'second count');
-  equal(s.stat['navigation'].total, 5 + 9, 'second total');
+    s.add('navigation', 9);
+    equal(s.stat['navigation'].count(), 2, 'second count');
+    equal(s.stat['navigation'].total(), 5 + 9, 'second total');
 });
 
-test('LatencyStats.increment', function() {
-  var s = new LatencyStats();
-
-  s.increment('navigation', 'tabclosed');
-  equal(s.stat['navigation'].tabclosed, 1, 'single tabclosed');
-
-  s.increment('navigation', 'tabclosed');
-  equal(s.stat['navigation'].tabclosed, 2, 'second tabclosed');
-});
 
 test('LatencyStats.transfer', function() {
-  var s = new LatencyStats();
-  var t = new LatencyStats();
+    var s = new LatencyStats();
+    var t = new LatencyStats();
 
-  s.add('navigation', 5);
-  s.add('request', 3);
-  t.add('request', 4);
-  t.add('tabupdate', 1);
-  t.transfer(s);
-  equal(s.stat['navigation'], undefined, 'zeroed navigation');
-  equal(s.stat['request'], undefined, 'zeroed request');
-  equal(t.stat['navigation'].total, 5, 'navigation total');
-  equal(t.stat['navigation'].count, 1, 'navigation count');
-  equal(t.stat['request'].total, 7, 'request total');
-  equal(t.stat['request'].count, 2, 'request count');
-  equal(t.stat['tabupdate'].total, 1, 'tabupdate total');
-  equal(t.stat['tabupdate'].count, 1, 'tabupdate count');
+    s.add('navigation', 5);
+    s.add('request', 3);
+    t.add('request', 4);
+    t.add('tabupdate', 1);
+    t.transfer(s);
+    equal(s.stat['navigation'], undefined, 'zeroed navigation');
+    equal(s.stat['request'], undefined, 'zeroed request');
+    equal(t.stat['navigation'].total(), 5, 'navigation total');
+    equal(t.stat['navigation'].count(), 1, 'navigation count');
+    equal(t.stat['request'].total(), 7, 'request total');
+    equal(t.stat['request'].count(), 2, 'request count');
+    equal(t.stat['tabupdate'].total(), 1, 'tabupdate total');
+    equal(t.stat['tabupdate'].count(), 1, 'tabupdate count');
 });
 
 test('LatencyStats.count', function() {
@@ -67,8 +58,8 @@ test('LatencyStats.count', function() {
   s.add('navigation', 5);
   s.add('navigation', 10);
   s.add('request', 2);
-  equal(s.count('navigation'), 4, '4 navigations added');
-  equal(s.count('request'), 2, '2 request added');
+  equal(s.count('navigation'), 2, '2 navigations added');
+  equal(s.count('request'), 1, '1 request added');
   equal(s.count('tabupdates'), 0, '0 tabupdates');
 });
 

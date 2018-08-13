@@ -28,9 +28,90 @@
  * Also holds count of errors and interrupts for different events.
  * @constructor
  */
-function Stat() {
-  this.count = 0;
-  this.total = 0;
+function Stat(data) {
+    if (data) {
+	if (data.d) {
+	    this.d = data.d;
+	} else if (data.n) {
+	    this.n = data.n;
+	    this.t = data.t;
+	    this.l = data.l;
+	    this.h = data.h;
+	}
+	logObject("Stat(data) = ", this);
+    }
+}
+
+/* functions to read out statistical values */
+Stat.prototype.count = function() {
+    if (this.n) {
+	return this.n;
+    } else if (this.d) {
+	return this.d.length;
+    } else {
+	return 0;
+    }
+}
+
+Stat.prototype.high = function() {
+    if (this.h) {
+	return this.h;
+    } else if (this.d) {
+	var h = this.d[0];
+	for (var i=1; i<this.d.length; i++) {
+	    if (this.d[i] > h) {
+		h = this.d[i];
+	    }
+	}
+	return h;
+    } else if (this.n == 1) {
+	return this.t;
+    } else if (this.n == 2 && this.l) {
+	return this.t - this.l;
+    } else {
+	return undefined;
+    }
+}
+
+Stat.prototype.low = function() {
+    if (this.l) {
+	return this.l;
+    } else if (this.d) {
+	var l = this.d[0];
+	for (var i=1; i<this.d.length; i++) {
+	    if (this.d[i] < l) {
+		l = this.d[i];
+	    }
+	}
+	return l;
+    } else if (this.n == 1) {
+	return this.t;
+    } else if (this.n == 2 && this.h) {
+	return this.t - this.h;
+    } else {
+	return undefined;
+    }
+}
+
+Stat.prototype.average = function() {
+    if (this.count() > 0) {
+	return this.total() / this.count();
+    }
+    return undefined;
+}
+
+Stat.prototype.total = function() {
+    if (this.t) {
+	return this.t;
+    } else if (this.d) {
+	var t=0;
+	for (var i=0; i<this.d.length; i++) {
+	    t += this.d[i];
+	}
+	return t;
+    } else {
+	return undefined;
+    }
 }
 
 
@@ -43,55 +124,38 @@ function Stat() {
  * @param {number} delta The is a new measurement to incorporate in the stat.
  */
 Stat.prototype.add = function(delta) {
-  if (this.count == 1) {
-    this.high = this.total;
-  }
+    if (this.count() == 0) {
+	this.d = [ delta ];
+    } else if (this.d) {
+	this.d.push(delta);
 
-  if (this.count == 2) {
-    this.low = this.total - this.high;
-  }
-
-  this.count++;
-  this.total += delta;
-
-  if (this.count>1) {
-    if (delta > this.high) {
-      this.high = delta;
-    }
-  }
-
-  if (this.count>2) {
-    if (delta < this.low) {
-      this.low = delta;
-    }
-  }
-
-  if (delta <= 1000) {
-    if (delta <= 100) {
-      this.increment('m100');
-    } else if (delta <= 500) {
-      this.increment('m500');
+	if (this.d.length > 3) {
+	    this.t=0;
+	    this.n = this.d.length;
+	    this.l = this.h = this.d[0];
+	    for (var i=0; i<this.d.length; i++) {
+		this.t += this.d[i];
+		if (this.d[i] < this.l) {
+		    this.l = this.d[i];
+		}
+		if (this.d[i] > this.h) {
+		    this.h = this.d[i];
+		}
+	    }
+	    delete this['d'];
+	}
     } else {
-      this.increment('m1000');
-    }
-  } else {
-    if (delta <= 2000) {
-      this.increment('m2000');
-    } else if (delta <= 4000) {
-      this.increment('m4000');
-    } else if (delta <= 10000) {
-      this.increment('m10000');
-    }
-  }
+	this.n++;
+	this.t += delta;
+	if (delta < this.l) {
+	    this.l = delta;
+	}
+	if (delta > this.h) {
+	    this.h = delta;
+	}
+    }	
+    /* TODO: bins to keep more distribution information */
 };
-
-Stat.prototype.increment = function(countable) {
-  if (countable in this) {
-    this[countable]++;
-  } else {
-    this[countable] = 1;
-  }
-}
 
 
 /**
@@ -101,35 +165,45 @@ Stat.prototype.increment = function(countable) {
  * @param {Object} stat The stat to transfer into this and zero.
  */
 Stat.prototype.transfer = function(stat) {
-  if (stat.high) {
-    if (this.high) {
-      if (stat.high > this.high) {
-        this.high = stat.high;
-      }
+    if (stat.d) {
+	if (this.count() == 0) {
+	    this.d = stat.d;
+	} else {
+	    for (var i=0; i<stat.d.length; i++) {
+		this.add(stat.d[i]);
+	    }
+	}
+	delete stat['d'];
     } else {
-      this.high = stat.high;
-    }
-    delete stat['high'];
-  }
-  if (stat.low) {
-    if (this.low) {
-      if (stat.low < this.low) {
-        this.low = stat.low;
-      }
-    } else {
-      this.low = stat.low;
-    }
-    delete stat['low'];
-  }
-  for (var n in stat) {
-    if (!(n in Stat.prototype)) {
-      if (n in this) {
-	this[n] += stat[n];
-      } else {
-	this[n] = stat[n];
-      }
-      delete stat[n];
-    }
-  }
+	if (stat.h) {
+	    this.add(stat.h);
+	    stat.t -= stat.h;
+	    stat.n--;
+	    delete stat['h'];
+	}
+  
+	if (stat.l) {
+	    this.add(stat.l);
+	    stat.t -= stat.l;
+	    stat.n--;
+	    delete stat['l'];
+	}
+
+	if (this.n) {
+	    this.n += stat.n;
+	    this.t += stat.t;
+	} else {
+	    var avg = stat.t/stat.n;
+	    while (! this.n) {
+		this.add(avg);
+		stat.t -= avg;
+		stat.n--;
+	    }
+	    this.t += stat.t;
+	    this.n += stat.n;
+	    delete stat['t'];
+	    delete stat['n'];
+	}
+    }		
 };
 

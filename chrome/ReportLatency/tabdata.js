@@ -102,20 +102,22 @@ TabData.prototype.endRequest = function(data) {
 	    if (localStorage['log_requests'] == 'true' ||
 		(data.type == 'main_frame' &&
 		 localStorage['log_navigations'] == 'true')) {
-	      console.log(name + ' (' + this.service + ') requests +' +
-			  delay + ' ms');
+		console.log(name + ' (' + this.service + ') requests +' +
+			    delay + ' ms');
 	    }
 	    var latencyType='nreq';
 	    if (this.service) {
 	      latencyType='ureq';
 	    }
 	    this.stat.add(name, latencyType, delay);
+	    /* TODO: not keeping status code data currently, but it can be captured here
 	    if (data.statusCode) {
 	      var family = statusCodeFamily(data.statusCode);
 	      if (family) {
 		this.stat.increment(name, latencyType, 'r' + family);
 	      }
-	    }
+
+	    } */
 	  }
 	} else {
 	  if (localStorage['debug_requests'] == 'true') {
@@ -233,7 +235,7 @@ TabData.prototype.endNavigation = function(data) {
 			    ') navigations +' + delay + ' ms');
 	      }
 	      this.stat.add(original_name, 'nav', delay);
-	      if (this.mainFrameStatusCode) {
+	      /* if (this.mainFrameStatusCode) {
 		var family = statusCodeFamily(this.mainFrameStatusCode);
 		if (family) {
 		  if (localStorage['log_navigations'] == 'true') {
@@ -242,7 +244,7 @@ TabData.prototype.endNavigation = function(data) {
 		  }
 		  this.stat.increment(original_name, 'nav', 'r' + family);
 		}
-	      }
+	      } */
 	    } else {
 	      if (localStorage['debug_navigations'] == 'true') {
 		console.log('missing timeStamp in endNavigation() data');

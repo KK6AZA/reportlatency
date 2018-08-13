@@ -19,35 +19,35 @@
  */
 
 test('ServiceStats.add', function() {
-  var s = new ServiceStats();
+    var s = new ServiceStats();
 
-  s.add('service', 'name', 'navigation', 5);
-  equal(s.stat['service'].stat['name'].stat['navigation'].count,
+    s.add('service', 'name', 'navigation', 5);
+    equal(s.stat['service'].stat['name'].stat['navigation'].count(),
 	1, 'single count');
-  equal(s.stat['service'].stat['name'].stat['navigation'].total,
+    equal(s.stat['service'].stat['name'].stat['navigation'].total(),
 	5, 'single total');
 });
 
 test('ServiceStats.transfer', function() {
-  var s = new ServiceStats();
-  var n = new NameStats();
+    var s = new ServiceStats();
+    var n = new NameStats();
 
-  n.add('name', 'navigation', 3);
-  s.transfer('service', n);
-  equal(n.empty(), false, 'NameStats not empty');
-  equal(s.stat['service'].stat['name'].stat['navigation'].count, 1,
-	'1 navigations added');
+    n.add('name', 'navigation', 3);
+    s.transfer('service', n);
+    equal(n.empty(), false, 'NameStats not empty');
+    equal(s.stat['service'].stat['name'].stat['navigation'].count(), 1,
+	  '1 navigations added');
 
-  n.add('name', 'request', 2);
-  equal(s.stat['service'].stat['name'].stat['request'].count, 1,
-	'1 request passed through');
+    n.add('name', 'request', 2);
+    equal(s.stat['service'].stat['name'].stat['request'].count(), 1,
+	  '1 request passed through');
 
-  n = new NameStats();
-  n.add('name', 'navigation', 5);
-  s.transfer('service', n);
-  equal(n.empty(), true, 'NameStats now empty');
-  equal(s.stat['service'].stat['name'].stat['navigation'].count, 2,
-	'2 navigations added');
+    n = new NameStats();
+    n.add('name', 'navigation', 5);
+    s.transfer('service', n);
+    equal(n.empty(), true, 'NameStats now empty');
+    equal(s.stat['service'].stat['name'].stat['navigation'].count(), 2,
+	  '2 navigations added');
 });
 
 test('ServiceStats.best', function() {
@@ -85,8 +85,9 @@ test('ServiceStats.toJSON', function() {
   ok('service' in obj,'obj.service');
   ok('server' in obj.service,'obj.service.server');
   ok('navigation' in obj.service.server,'obj.service.server.navigation');
-  ok('count' in obj.service.server.navigation,
-     'obj.service.server.navigation.count');
-  equal(obj.service.server.navigation.count, 1, '1 server navigation count');
+  ok('d' in obj.service.server.navigation,
+     'obj.service.server.navigation.d');
+  equal(obj.service.server.navigation.d.length, 1, '1 server navigation');
+  equal(obj.service.server.navigation.d[0], 5, 'server navigation value');
 });
 

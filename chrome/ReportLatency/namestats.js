@@ -44,21 +44,6 @@ NameStats.prototype.add = function(name, latency, delta) {
   this.stat[name].add(latency,  delta);
 };
 
-/**
- * Adds a new countable event result
- *
- * @param {string} name is the original request name this stat is for
- * @param {string} latency is the type of latency.
- * @param {number} countable is event result rather than a latency delay
- *
- */
-NameStats.prototype.increment = function(name, latency, countable) {
-  if (!this.stat[name]) {
-    this.stat[name] = new LatencyStats();
-  }
-  this.stat[name].increment(latency, countable);
-};
-
 
 /**
  * Combine two measurements, zeroing one and transfering all counts to this
@@ -154,6 +139,21 @@ NameStats.prototype.best = function(last) {
   }
   return b;
 };
+
+/**
+ * Just the navigation data
+ *
+ **/
+NameStats.prototype.navigations = function(servicename) {
+    for (var s in this.stat) {
+	if (s == servicename) {
+	    var n = this.stat[s].navigations();
+	    logObject("NameStats.stat[" + s + "].navigations() = ", n);
+	    return n;
+	}
+    }
+    return new Stat;
+}
 
 /**
  *

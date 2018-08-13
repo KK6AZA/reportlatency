@@ -264,13 +264,11 @@ LatencyData.prototype.postLatency = function(skip) {
 }
 
 /**
- * services() list the top level services (flattened navigations)
- * for 
- * completed events the extension has seen to the console.
+ * navigations() returns just the navigation stat, for initial summaries
  *
  **/
-LatencyData.prototype.services = function() {
-    return Object.keys(this.stats.stat);
+LatencyData.prototype.navigations = function() {
+    return this.stats.navigations();
 }
 
 /**
