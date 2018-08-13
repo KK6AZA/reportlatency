@@ -320,7 +320,7 @@ TabData.prototype.tabRemoved = function(removeInfo) {
       if ('url' in this.navigation) {
 	// received before the deleteNavigation() event
 	var name = aggregateName(this.navigation.url);
-	this.stat.increment(name, 'nav', 'tabclosed');
+	/* this.stat.increment(name, 'nav', 'tabclosed'); */
 	var delay = removeInfo.timeStamp - this.navigation.timeStamp;
 	this.stat.add(name, 'nav', delay);
 	if (localStorage['debug_tabs'] == 'true') {
@@ -334,7 +334,7 @@ TabData.prototype.tabRemoved = function(removeInfo) {
       for (var r in this.request) {
 	logObject('tab_deleted TabData.request[' + r + ']',this.request[r]);
 	var name = aggregateName(this.request[r].url);
-	this.stat.increment(name, 'nreq', 'tabclosed');
+	/* this.stat.increment(name, 'nreq', 'tabclosed'); */
 	var delay = removeInfo.timeStamp - this.request[r].timeStamp;
 	this.stat.add(name, 'nreq', delay);
 	if (localStorage['debug_tabs'] == 'true') {
@@ -347,7 +347,7 @@ TabData.prototype.tabRemoved = function(removeInfo) {
 	var name = this.nav_aborted;
 	var delay = removeInfo.timeStamp - this.request[r].timeStamp;
 	this.stat.add(name, 'nav', delay);
-	this.stat.increment(name, 'nav', 'tabclosed');
+	/* this.stat.increment(name, 'nav', 'tabclosed'); */
 	if (localStorage['debug_tabs'] == 'true') {
 	  console.log('  increment navigation[' + name + '].tabclosed');
 	}
@@ -357,7 +357,7 @@ TabData.prototype.tabRemoved = function(removeInfo) {
 		      this.request[r]);
 	  }
 	  var name = aggregateName(this.request[r].url);
-	  this.stat.increment(name, 'nreq', 'tabclosed');
+	  /* this.stat.increment(name, 'nreq', 'tabclosed'); */
 	  var delay = removeInfo.timeStamp - this.request[r].timeStamp;
 	  this.stat.add(name, 'nreq', delay);
 	  if (localStorage['debug_tabs'] == 'true') {
@@ -376,7 +376,7 @@ TabData.prototype.tabRemoved = function(removeInfo) {
    }
    for (var r in this.request) {
      var name = aggregateName(this.request[r].url);
-     this.stat.increment(name, 'ureq', 'tabclosed');
+     /* this.stat.increment(name, 'ureq', 'tabclosed'); */
      var delay = removeInfo.timeStamp - this.request[r].timeStamp;
      this.stat.add(name, 'ureq', delay);
    }
