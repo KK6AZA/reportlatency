@@ -44,11 +44,6 @@ LatencyStats.prototype.add = function(latency, delta) {
     this.stat[latency] = new Stat();
   }
     this.stat[latency].add(delta);
-    if (latency == 'nav') {
-	logObject("LatencyStats.add(" + latency + "," + delta +
-		  ") this.stat[nav] this = ",
-		  this.stat[latency]);
-    }
 };
 
 

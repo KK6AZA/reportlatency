@@ -38,7 +38,6 @@ function Stat(data) {
 	    this.l = data.l;
 	    this.h = data.h;
 	}
-	logObject("Stat(data) = ", this);
     }
 }
 

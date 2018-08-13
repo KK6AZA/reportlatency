@@ -107,15 +107,10 @@ chrome.runtime.onInstalled.addListener( onUpdateAvailable );
 
 function generate_navigations() {
     var navs = latencyData.navigations();
-    logObject("generate_navigations()", navs);
-    for (var s in navs) {
-	logObject(s + ": ", navs[s]);
-    }
     return navs;
 }
 
 function onMessage(message, sender, sendResponse) {
-    logObject("onMessage() ", message);
   if (sender.tab) {
     if (localStorage['debug_extension'] == 'true') {
       logObject(sender.tab.url + ' sent ' + message, message);

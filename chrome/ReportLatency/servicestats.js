@@ -127,8 +127,6 @@ ServiceStats.prototype.navigations = function() {
     var navigations = {};
     for (var service in this.stat) {
 	var n = this.stat[service].navigations(service);
-	logObject("ServiceStats.stat[" + service + "].navigations(" + service
-		  + ") = ", n);
 	navigations[service] = n;
     }
     return navigations;

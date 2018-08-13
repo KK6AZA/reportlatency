@@ -1,22 +1,22 @@
-var latency_table_counter = 0;
-
 var latency_table_navigations = {};
 
 function writeLatencyTable() {
     var t = document.getElementById('latency_table');
-    latency_table_counter++;
-    var html = '<tr> <dt>' + latency_table_counter + "</dt> </tr>\n";
-    html = html + `
+    var html = `
       <tr>
-	<th>Name</th> <th> Count </th> <th> Latency </th>
+	<th>Name</th> <th> Navigations </th> <th> Requests </th> <th> Latency (ms) </th>
       </tr>
 `;
-    for (var servicename in latency_table_navigations) {
-	var stat = latency_table_navigations[servicename];
-	logObject("latency_table_navigations[" + servicename + "]", stat);
-	html = html + "<tr> <td> " + servicename + " </td> <td> " +
-	    stat.count() + "</td> <td> " +
-	    Math.round(stat.average()) + "</td> </tr>\n";
+    var sorted_services = Object.keys(latency_table_navigations).sort()
+    for (var i in sorted_services) {
+	var service = sorted_services[i];
+	var stat = latency_table_navigations[service];
+	html = html + "<tr> " +
+	    "<td> " + service + " </td> " +
+	    "<td align=right> " + stat.count() + "</td> " +
+	    "<td> " + " </td> " +
+	    "<td align=right> " + Math.round(stat.average()) + "</td> " +
+	    "</tr>\n";
     }
     html = html + '<tr> <hl> </tr>' + "\n";
     t.innerHTML = html;
@@ -34,10 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function recv_navigations(response) {
     var navigations = {};
     for (var service in response.navigations) {
-	logObject("response.navigations[" + service + "]",
-		  response.navigations[service]);
 	navigations[service] = new Stat(response.navigations[service]);
-	logObject("navigations[" + service + "]", navigations[service]);
     }
     latency_table_navigations = navigations;
     writeLatencyTable();
