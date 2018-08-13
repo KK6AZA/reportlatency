@@ -108,9 +108,6 @@ LatencyStats.prototype.total = function(measurement) {
  */
 LatencyStats.prototype.navigations = function() {
     var s = this.stat['nav'];
-    if (s) {
-	logObject("LatencyStats.navigations() = ", s);
-    }
     return s;
 };
 

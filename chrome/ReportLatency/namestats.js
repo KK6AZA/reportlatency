@@ -148,7 +148,6 @@ NameStats.prototype.navigations = function(servicename) {
     for (var s in this.stat) {
 	if (s == servicename) {
 	    var n = this.stat[s].navigations();
-	    logObject("NameStats.stat[" + s + "].navigations() = ", n);
 	    return n;
 	}
     }
