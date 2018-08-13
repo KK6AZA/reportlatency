@@ -231,7 +231,14 @@ function isWebUrl(url) {
  * @return {string} is the service name to account traffic to.
  **/
 function aggregateName(encUrl) {
-  var url = decodeURIComponent(encUrl);
+    var url;
+    try {
+	url = decodeURIComponent(encUrl);
+    } catch (e) {
+	console.error(e);
+	console.error("unable to decodeURIComponent(" + encURL + ")");
+	return undefined;
+    }
   var hostIndex = url.indexOf('://') + 3;
   var pathIndex = url.substr(hostIndex).indexOf('/');
   var hostPort = url.substr(hostIndex, pathIndex);
