@@ -23,7 +23,6 @@
 'use strict';
 
 var optionDefault = {};
-optionDefault['report_to'] = 'http://localhost/reportlatency/post';
 
 // service_group{id}{'name'}
 //            {'description'}
@@ -31,6 +30,4 @@ optionDefault['report_to'] = 'http://localhost/reportlatency/post';
 var serviceGroup = {};
 
 
-var lastPostLatency = 0;
-var postLatencyCheckCalls = 0;
 

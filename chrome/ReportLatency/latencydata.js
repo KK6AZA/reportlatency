@@ -197,71 +197,6 @@ LatencyData.prototype.deleteNavigation = function(data) {
 };
 
 
-/**
- * Post Latency summaries to central server.
- * Post just one summary at a time for interactivity.  Choose a good one.
- * The details object is used in this selection.
-
- * @param {string} skip is a servicename to skip reports for
- **/
-LatencyData.prototype.postLatency = function(skip) {
-  if (localStorage['debug_posts'] == 'true') {
-    console.log('postLatency(! ' + skip + ')');
-  }
-
-  var bestFinal = this.stats.best(skip);
-  if (!bestFinal) { 
-    if (localStorage['debug_posts'] == 'true') {
-      console.log('  no best service to return');
-      this.reportExtensionStats();
-    }
-    return;
-  }
-  var bestService = this.stats.service(bestFinal);
-  var bestOriginal = bestService.best(skip);
-
-  var req = new XMLHttpRequest();
-
-  if (localStorage['log_posts'] == 'true') {
-    console.log('  posting ' + bestFinal);
-  }
-  req.open('POST', reportToUrl(), true);
-  req.setRequestHeader('Content-type', 'application/json');
-  var report={};
-  if ('manifest' in this) {
-    report.version = this.manifest.version;
-  }
-  report.options = get_wire_options();
-  report.tz = timeZone(Date());
-  report.services = {};
-  report.services[bestFinal] = bestService; // future: could be more than one
-  var json_report = JSON.stringify(report);
-  if (localStorage['debug_posts'] == 'true') {
-    console.log(json_report);
-  }
-  req.timeout = 10000;
-  if (localStorage['debug_posts'] == 'true') {
-    req.onerror = function (e) {
-      console.log('onerror e=' + req.statusText);
-    };
-  }
-  var stats = this.stats;
-  req.onload = function() {
-    if (req.status >= 200 && req.status<300) {
-      if (localStorage['debug_posts'] == 'true') {
-	console.log('deleting local stats for ' + bestFinal);
-      }
-      stats.delete(bestFinal);
-    } else {
-      if (localStorage['debug_posts'] == 'true') {
-	console.log('POST readyState ' + req.readyState);
-	console.log('POST status ' + req.status);
-	console.log('POST responseText ' + req.responseText);
-      }
-    }
-  }
-  req.send(json_report);
-}
 
 /**
  * navigations() returns just the navigation stat, for initial summaries
@@ -269,20 +204,6 @@ LatencyData.prototype.postLatency = function(skip) {
  **/
 LatencyData.prototype.navigations = function() {
     return this.stats.navigations();
-}
-
-/**
- * reportExtensionStats() writes some stats about the pending and
- * completed events the extension has seen to the console.
- *
- **/
-LatencyData.prototype.reportExtensionStats = function() {
-  var services = '';
-  for (var n in this.stats.stat) {
-    services = services.concat(' ' + n );
-  }
-  console.log('  ' + Object.keys(this.stats.stat).length +
-	      ' pending service reports:' + services);
 }
 
 /**

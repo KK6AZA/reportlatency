@@ -254,21 +254,6 @@ function aggregateName(encUrl) {
 }
 
 /**
- * @return {string} the content of localStorage's report_to.
- **/
-function reportToUrl() {
-  if ('report_to' in localStorage) {
-    var r = localStorage['report_to'];
-    if ((r != null) && (r != '')) {
-      return r;
-    } else {
-      delete localStorage['report_to'];
-    }
-  }
-  return optionDefault['report_to'];
-}
-
-/**
  * timeZone() converts a Date() to a short name for the browser's timezone
  * as a proxy for office location.
  *
