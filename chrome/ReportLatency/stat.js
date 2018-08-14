@@ -206,3 +206,47 @@ Stat.prototype.transfer = function(stat) {
     }		
 };
 
+/**
+ * Add a Stat to this one, leaving the argument Stat unchanged
+ *
+ * @this {Stat}
+ * @param {Object} stat The stat to transfer into this.
+ */
+Stat.prototype.add_stat = function(stat) {
+    if (stat) {
+	if (stat.d) {
+	    for (var i=0; i<stat.d.length; i++) {
+		this.add(stat.d[i]);
+	    }
+	} else {
+	    var t = stat.t;
+	    var n = stat.n;
+	    if (stat.h) {
+		this.add(stat.h);
+		t -= stat.h;
+		n--;
+	    }
+  
+	    if (stat.l) {
+		this.add(stat.l);
+		t -= stat.l;
+		n--;
+	    }
+
+	    if (this.n) {
+		this.n += n;
+		this.t += t;
+	    } else {
+		var avg = t/n;
+		while (! this.n) {
+		    this.add(avg);
+		    t -= avg;
+		    n--;
+		}
+		this.t += t;
+		this.n += n;
+	    }
+	}
+    }
+};
+

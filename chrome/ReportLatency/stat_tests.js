@@ -89,3 +89,30 @@ test('Stat.transfer', function() {
     equal(s.high(), 12, 'third transfer high');
 });
 
+test('Stat.add_stat', function() {
+    var s = new Stat();
+    var t = new Stat();
+    t.add(10);
+
+    s.add_stat(t);
+
+    equal(s.count(), 1, 'first add_stat count');
+    equal(s.total(), 10, 'first add_stat total');
+    equal(s.low(), 10, 'first add_stat low');
+    equal(s.high(), 10, 'first add_stat high');
+    equal(t.count(), 1, 'tmp add_stat count');
+    equal(t.total(), 10, 'tmp add_stat total');
+
+    t.add(5);
+    s.add_stat(t);
+
+    equal(s.count(), 3, 'second add_stat count');
+    equal(s.total(), 25, 'second add_stat total');
+    equal(s.low(), 5, 'second add_stat low');
+    equal(s.high(), 10, 'second add_stat high');
+    equal(t.count(), 2, 'tmp add_stat count');
+    equal(t.total(), 15, 'tmp add_stat total');
+    equal(t.low(), 5, 'tmp add_stat high');
+    equal(t.high(), 10, 'tmp add_stat high');
+});
+

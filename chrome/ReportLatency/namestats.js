@@ -141,17 +141,15 @@ NameStats.prototype.best = function(last) {
 };
 
 /**
- * Just the navigation data
+ * Sum the navigation data
  *
  **/
 NameStats.prototype.navigations = function(servicename) {
+    var n = new Stat;
     for (var s in this.stat) {
-	if (s == servicename) {
-	    var n = this.stat[s].navigations();
-	    return n;
-	}
+	n.add_stat(this.stat[s].navigations());
     }
-    return new Stat;
+    return n;
 }
 
 /**
