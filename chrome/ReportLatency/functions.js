@@ -235,9 +235,9 @@ function aggregateName(encUrl) {
     try {
 	url = decodeURIComponent(encUrl);
     } catch (e) {
-	console.error(e);
-	console.error("unable to decodeURIComponent(" + encURL + ")");
-	return undefined;
+	console.log("unable to decodeURIComponent(" + encUrl + ")");
+	console.log(e);
+	url = encUrl; // try it as if unencoded
     }
   var hostIndex = url.indexOf('://') + 3;
   var pathIndex = url.substr(hostIndex).indexOf('/');
