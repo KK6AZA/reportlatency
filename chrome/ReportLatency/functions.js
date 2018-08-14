@@ -235,29 +235,31 @@ function aggregateName(encUrl) {
     try {
 	url = decodeURIComponent(encUrl);
     } catch (e) {
-	console.log("unable to decodeURIComponent(" + encUrl + ")");
-	console.log(e);
+	console.error("unable to decodeURIComponent(" + encUrl + ")");
+	console.error(e);
 	url = encUrl; // try it as if unencoded
+	console.log(url);
+    } finally {
+	var hostIndex = url.indexOf('://') + 3;
+	var pathIndex = url.substr(hostIndex).indexOf('/');
+	var hostPort = url.substr(hostIndex, pathIndex);
+	var portIndex = hostPort.indexOf(':');
+
+	var host = (portIndex>=0 ? hostPort.substr(0,portIndex) : hostPort);
+	var path = url.substr(pathIndex + hostIndex + 1);
+
+	for (var id in serviceGroup) {
+	    var cb = serviceGroup[id]['callback'];
+	    var name = cb(host, path);
+	    if (name) return name;
+	}
+
+	if (localStorage['default_as_org'] == 'true') {
+	    return defaultDomain(host);
+	}
+
+	return '.';
     }
-  var hostIndex = url.indexOf('://') + 3;
-  var pathIndex = url.substr(hostIndex).indexOf('/');
-  var hostPort = url.substr(hostIndex, pathIndex);
-  var portIndex = hostPort.indexOf(':');
-
-  var host = (portIndex>=0 ? hostPort.substr(0,portIndex) : hostPort);
-  var path = url.substr(pathIndex + hostIndex + 1);
-
-  for (var id in serviceGroup) {
-    var cb = serviceGroup[id]['callback'];
-    var name = cb(host, path);
-    if (name) return name;
-  }
-
-  if (localStorage['default_as_org'] == 'true') {
-    return defaultDomain(host);
-  }
-
-  return '.';
 }
 
 /**

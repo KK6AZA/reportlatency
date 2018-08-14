@@ -34,7 +34,7 @@ test('ServiceStats.transfer', function() {
 
     n.add('name', 'navigation', 3);
     s.transfer('service', n);
-    equal(n.empty(), false, 'NameStats not empty');
+    equal(n.empty(), false, 'NameStats empty');
     equal(s.stat['service'].stat['name'].stat['navigation'].count(), 1,
 	  '1 navigations added');
 
