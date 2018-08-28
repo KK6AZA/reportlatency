@@ -104,14 +104,6 @@ LatencyStats.prototype.total = function(measurement) {
 
 
 /**
- * @returns {Stat} just the navigation Stat object
- */
-LatencyStats.prototype.navigations = function() {
-    var s = this.stat['nav'];
-    return s;
-};
-
-/**
  *
  * All the reportable data is in this.stat, so just report that for the
  * wire protocol

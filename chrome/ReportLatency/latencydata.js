@@ -201,11 +201,11 @@ LatencyData.prototype.deleteNavigation = function(data) {
 
 
 /**
- * navigations() returns just the navigation stat, for initial summaries
+ * summary() returns data aggregated by navigation, for summaries
  *
  **/
-LatencyData.prototype.navigations = function() {
-    return this.stats.navigations();
+LatencyData.prototype.summary = function() {
+    return this.stats.summary();
 }
 
 /**

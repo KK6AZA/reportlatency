@@ -141,13 +141,25 @@ NameStats.prototype.best = function(last) {
 };
 
 /**
- * Sum the navigation data
+ * Sum a particular latency (nav, nreq, ureq)
  *
  **/
-NameStats.prototype.navigations = function(servicename) {
+NameStats.prototype.latency_sum = function(latency) {
     var n = new Stat;
     for (var s in this.stat) {
-	n.add_stat(this.stat[s].navigations());
+	n.add_stat(this.stat[s].stat[latency]);
+    }
+    return n;
+}
+
+/**
+ * Sum the update request data
+ *
+ **/
+NameStats.prototype.update_requests = function() {
+    var n = new Stat;
+    for (var s in this.stat) {
+	n.add_stat(this.stat[s].update_requests());
     }
     return n;
 }

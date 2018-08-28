@@ -105,9 +105,8 @@ function onUpdateAvailable(details) {
 chrome.runtime.onInstalled.addListener( onUpdateAvailable );
 
 
-function generate_navigations() {
-    var navs = latencyData.navigations();
-    return navs;
+function generate_summary() {
+    return latencyData.summary();
 }
 
 function onMessage(message, sender, sendResponse) {
@@ -124,9 +123,9 @@ function onMessage(message, sender, sendResponse) {
   if (message.rpc == 'get_options') {
     response={serviceGroup: serviceGroup};
     sendResponse(response);
-  } else if (message.rpc == 'get_navigations') {
-      var navigations = generate_navigations();
-      response={navigations: navigations};
+  } else if (message.rpc == 'get_summary') {
+      var summary = generate_summary();
+      response={summary: summary};
       sendResponse(response);
   } else {
       console.log("message.rpc='" + message.rpc + "'");

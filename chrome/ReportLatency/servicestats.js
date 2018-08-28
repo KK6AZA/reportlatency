@@ -120,16 +120,18 @@ ServiceStats.prototype.delete = function(final) {
 }
 
 /**
- * Just the navigation data
+ * Just the top level aggregations broken down by navigation service
  *
  **/
-ServiceStats.prototype.navigations = function() {
-    var navigations = {};
+ServiceStats.prototype.summary = function() {
+    var data = {};
     for (var service in this.stat) {
-	var n = this.stat[service].navigations(service);
-	navigations[service] = n;
+	data[service] = {};
+	data[service].nav = this.stat[service].latency_sum('nav');
+	data[service].nreq = this.stat[service].latency_sum('nreq');
+	data[service].ureq = this.stat[service].latency_sum('ureq');
     }
-    return navigations;
+    return data;
 }
 
 
