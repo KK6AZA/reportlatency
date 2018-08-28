@@ -47,5 +47,13 @@ test('aggregateName', function() {
       ('https://s0.2mdn.google.com/8025626/1532610381043/BUS_BDL_ENG_3490GrayCountdown_100…034%,%20rgb(160,%20160,%20160)%2050%,%20rgba(160,%20160,%20160,%200)%2060%'),
       '2mdn.google.com',
       'observed in wild from 2mdn.net, breaks native decoder');
-
 });
+
+/* test domain name flattening w/o needing to set default_as_org */
+test('defaultDomain', function() {
+  equal(defaultDomain
+      ('www.company.ai'),
+      'company.ai',
+	'company.ai');
+});
+

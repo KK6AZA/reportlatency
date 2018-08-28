@@ -182,8 +182,18 @@ function usDomain(hostname) {
   return twoLevelDomain(hostname);
 }
 
+/* Some two letter country codes allow 2-level organization names
+ * Others have their own complex rules.  Not comprehensive. */
 var tldMap = {
-  'us': usDomain
+    'us': usDomain,
+    'ac': twoLevelDomain,
+    'ad': twoLevelDomain,
+    'ai': twoLevelDomain,
+    'am': twoLevelDomain,
+    'cc': twoLevelDomain,
+    'co': twoLevelDomain,
+    'id': twoLevelDomain,
+    'io': twoLevelDomain
 };
 
 /**
