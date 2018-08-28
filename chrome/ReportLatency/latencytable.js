@@ -4,7 +4,22 @@ function writeLatencyTable() {
     var t = document.getElementById('latency_table');
     var html = `
       <tr>
-	<th>Name</th> <th> Navigations </th> <th> Requests </th> <th> Latency (ms) </th>
+        <th>Name</th>
+        <th colspan=4> Navigation </th>
+        <th colspan=4> Navigation Request </th>
+        <th colspan=4> Update Request </th>
+      </tr>
+      <tr>
+        <th></th>
+        <th> count </th> <th colspan=3>Latency(ms)</th>
+        <th> count </th> <th colspan=3>Latency(ms)</th>
+        <th> count </th> <th colspan=3>Latency(ms)</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th> </th> <th>low</th> <th>avg</th> <th>high</th>
+        <th> </th> <th>low</th> <th>avg</th> <th>high</th>
+        <th> </th> <th>low</th> <th>avg</th> <th>high</th>
       </tr>
 `;
     var sorted_services = Object.keys(latency_table_navigations).sort()
@@ -14,8 +29,9 @@ function writeLatencyTable() {
 	html = html + "<tr> " +
 	    "<td> " + service + " </td> " +
 	    "<td align=right> " + stat.count() + "</td> " +
-	    "<td> " + " </td> " +
+	    "<td align=right> " + Math.round(stat.low()) + "</td> " +
 	    "<td align=right> " + Math.round(stat.average()) + "</td> " +
+	    "<td align=right> " + Math.round(stat.high()) + "</td> " +
 	    "</tr>\n";
     }
     html = html + '<tr> <hl> </tr>' + "\n";
