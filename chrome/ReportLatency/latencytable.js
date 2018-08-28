@@ -1,5 +1,13 @@
 var latency_table_summary = {};
 
+function int(s) {
+    if (s>0) {
+	return Math.round(s);
+    } else {
+	return '';
+    }
+}
+
 function writeLatencyTable() {
     var t = document.getElementById('latency_table');
     var html = `
@@ -30,18 +38,18 @@ function writeLatencyTable() {
 	var ureq = latency_table_summary[service].ureq;
 	html = html + "<tr> " +
 	    "<td> " + service + " </td> " +
-	    "<td align=right> " + nav.count() + "</td> " +
-	    "<td align=right> " + Math.round(nav.low()) + "</td> " +
-	    "<td align=right> " + Math.round(nav.average()) + "</td> " +
-	    "<td align=right> " + Math.round(nav.high()) + "</td> " +
-	    "<td align=right> " + nreq.count() + "</td> " +
-	    "<td align=right> " + Math.round(nreq.low()) + "</td> " +
-	    "<td align=right> " + Math.round(nreq.average()) + "</td> " +
-	    "<td align=right> " + Math.round(nreq.high()) + "</td> " +
-	    "<td align=right> " + ureq.count() + "</td> " +
-	    "<td align=right> " + Math.round(ureq.low()) + "</td> " +
-	    "<td align=right> " + Math.round(ureq.average()) + "</td> " +
-	    "<td align=right> " + Math.round(ureq.high()) + "</td> " +
+	    "<td align=right> " + int(nav.count()) + "</td> " +
+	    "<td align=right> " + int(nav.low()) + "</td> " +
+	    "<td align=right> " + int(nav.average()) + "</td> " +
+	    "<td align=right> " + int(nav.high()) + "</td> " +
+	    "<td align=right> " + int(nreq.count()) + "</td> " +
+	    "<td align=right> " + int(nreq.low()) + "</td> " +
+	    "<td align=right> " + int(nreq.average()) + "</td> " +
+	    "<td align=right> " + int(nreq.high()) + "</td> " +
+	    "<td align=right> " + int(ureq.count()) + "</td> " +
+	    "<td align=right> " + int(ureq.low()) + "</td> " +
+	    "<td align=right> " + int(ureq.average()) + "</td> " +
+	    "<td align=right> " + int(ureq.high()) + "</td> " +
 	    "</tr>\n";
     }
     html = html + '<tr> <hl> </tr>' + "\n";
