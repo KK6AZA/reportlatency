@@ -39,6 +39,7 @@ test('ServiceStats.transfer', function() {
 	  '1 navigations added');
 
     n.add('name', 'request', 2);
+    logObject(s.stat['service']);
     equal(s.stat['service'].stat['name'].stat['request'].count(), 1,
 	  '1 request passed through');
 
