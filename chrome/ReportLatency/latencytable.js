@@ -14,20 +14,26 @@ function writeLatencyTable() {
       <tr>
         <th>Name</th>
         <th colspan=4> Navigation </th>
+        <th></th>
         <th colspan=4> Navigation Request </th>
+        <th></th>
         <th colspan=4> Update Request </th>
       </tr>
       <tr>
         <th></th>
-        <th> count </th> <th colspan=3>Latency(ms)</th>
-        <th> count </th> <th colspan=3>Latency(ms)</th>
-        <th> count </th> <th colspan=3>Latency(ms)</th>
+        <th> ct </th> <th colspan=3>Latency(ms)</th>
+        <th></th>
+        <th> ct </th> <th colspan=3>Latency(ms)</th>
+        <th></th>
+        <th> ct </th> <th colspan=3>Latency(ms)</th>
       </tr>
       <tr>
         <th></th>
-        <th> </th> <th>low</th> <th>avg</th> <th>high</th>
-        <th> </th> <th>low</th> <th>avg</th> <th>high</th>
-        <th> </th> <th>low</th> <th>avg</th> <th>high</th>
+        <th></th> <th>low</th> <th>avg</th> <th>high</th>
+        <th></th>
+        <th></th> <th>low</th> <th>avg</th> <th>high</th>
+        <th></th>
+        <th></th> <th>low</th> <th>avg</th> <th>high</th>
       </tr>
 `;
     var sorted_services = Object.keys(latency_table_summary).sort()
@@ -42,10 +48,12 @@ function writeLatencyTable() {
 	    "<td align=right> " + int(nav.low()) + "</td> " +
 	    "<td align=right> " + int(nav.average()) + "</td> " +
 	    "<td align=right> " + int(nav.high()) + "</td> " +
+	    "<td></td> " +
 	    "<td align=right> " + int(nreq.count()) + "</td> " +
 	    "<td align=right> " + int(nreq.low()) + "</td> " +
 	    "<td align=right> " + int(nreq.average()) + "</td> " +
 	    "<td align=right> " + int(nreq.high()) + "</td> " +
+	    "<td></td> " +
 	    "<td align=right> " + int(ureq.count()) + "</td> " +
 	    "<td align=right> " + int(ureq.low()) + "</td> " +
 	    "<td align=right> " + int(ureq.average()) + "</td> " +
