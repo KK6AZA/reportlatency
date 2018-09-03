@@ -95,15 +95,22 @@ TabData.prototype.endRequest = function(data) {
       if (('url' in data) &&
 	  (data.url == this.request[data.requestId].url)) {
 	var name = aggregateName(data.url);
+	var delay = data.timeStamp -
+	    this.request[data.requestId].timeStamp;
 	if (name) {
-	  if (!data.fromCache) {
-	    var delay = data.timeStamp -
-	      this.request[data.requestId].timeStamp;
+	  if (!data.fromCache &&
+	      data.statusLine != 'HTTP/1.1 307 Internal Redirect' &&
+	      data.statusLine != 'HTTP/1.1 400 Service Worker Fallback Required') {
 	    if (localStorage['log_requests'] == 'true' ||
 		(data.type == 'main_frame' &&
 		 localStorage['log_navigations'] == 'true')) {
 		console.log(name + ' (' + this.service + ') requests +' +
 			    delay + ' ms');
+	    }
+	    if (delay < 10) {
+	      console.log("short delay request, no cache: delay=" + delay);
+		console.log("data.statusLine = '" + data.statusLine + "'");
+		logObject("endRequest: ",data);
 	    }
 	    var latencyType='nreq';
 	    if (this.service) {
