@@ -184,6 +184,8 @@ var major_two_ld_function_map = {
     'gearbest.com': twoLevelDomain,
     'aliexpress.com': twoLevelDomain,
     'adafruit.com': twoLevelDomain,
+    'sfgate.com': twoLevelDomain,
+    'mercurynews.com': twoLevelDomain,
 };
 
 var major_two_ld_string_map = {

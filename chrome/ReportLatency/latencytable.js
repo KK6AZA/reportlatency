@@ -68,6 +68,7 @@ function request_summary() {
     chrome.runtime.sendMessage({ rpc: "get_summary" }, recv_summary);
 }
 
+// not currently used, just reload whole page
 document.addEventListener('DOMContentLoaded', function () {
     request_summary();
     document.querySelector('button').addEventListener('click', request_summary);
