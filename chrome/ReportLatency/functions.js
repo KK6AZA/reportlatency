@@ -261,7 +261,6 @@ function aggregateName(encUrl) {
 	var bestname = '.';
 	var bestlen = bestname.length;
 	for (var id in serviceGroup) {
-	    console.log("serviceGroup[" + id + "]");
 	    var cb = serviceGroup[id]['callback'];
 	    var name = cb(host, path);
 	    if (name) {
