@@ -260,18 +260,15 @@ function aggregateName(encUrl) {
 
 	var bestname = '.';
 	var bestlen = bestname.length;
-	console.log(bestname + " .length = " + bestname.length);
 	for (var id in serviceGroup) {
 	    console.log("serviceGroup[" + id + "]");
 	    var cb = serviceGroup[id]['callback'];
 	    var name = cb(host, path);
 	    if (name) {
 		var len = name.length;
-		console.log(name + " .length = " + len);
 		if (len > bestlen) {
 		    bestname = name;
 		    bestlen = len;
-		    console.log("bestname = " + bestname + " .length=" + bestlen);
 		}
 	    }	
 	}
@@ -284,8 +281,6 @@ function aggregateName(encUrl) {
 		bestlen = len;
 	    }
 	}
-
-	console.log("returning bestname = " + bestname);
 
 	return bestname;
     }

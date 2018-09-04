@@ -156,6 +156,34 @@ var major_two_ld_function_map = {
     'cpan.org': twoLevelDomain,
     'ticketmaster.com': twoLevelDomain,
     'slashdot.org': twoLevelDomain,
+    'nextdoor.com': twoLevelDomain,
+    'slate.com': twoLevelDomain,
+    'djangoproject.com': twoLevelDomain,
+    'mojolicious.org': twoLevelDomain,
+    'nodejs.org': twoLevelDomain,
+    'agilealliance.org': twoLevelDomain,
+    'c2.com': twoLevelDomain,
+    'catalystframework.org': twoLevelDomain,
+    'rubyonrails.org': twoLevelDomain,
+    'angular.io': twoLevelDomain,
+    'zend.com': twoLevelDomain,
+    'laravel.com': twoLevelDomain,
+    'yiiframework.com': twoLevelDomain,
+    'golang.org': twoLevelDomain,
+    'thehill.com': twoLevelDomain,
+    'grails.org': twoLevelDomain,
+    'npr.org': twoLevelDomain,
+    'pbs.org': twoLevelDomain,
+    'pbskids.org': twoLevelDomain,
+    'meteor.com': twoLevelDomain,
+    'target.com': twoLevelDomain,
+    'walmart.com': twoLevelDomain,
+    'weather.com': twoLevelDomain,
+    'dx.com': twoLevelDomain,
+    'banggood.com': twoLevelDomain,
+    'gearbest.com': twoLevelDomain,
+    'aliexpress.com': twoLevelDomain,
+    'adafruit.com': twoLevelDomain,
 };
 
 var major_two_ld_string_map = {
@@ -166,19 +194,16 @@ var major_two_ld_string_map = {
 
 
 function majorName(host, path) {
-    console.log("majorName(" + host + ", " + path + ")");
   var domain2 = twoLevelDomain(host);
     
   var s = major_two_ld_string_map[domain2];
   if (s) {
-    console.log("return " + s);
       return s.toString();
   }
 
   var foo = major_two_ld_function_map[domain2];
   if (foo) {
       s = foo(host, path);
-    console.log("return " + s);
       return s.toString();
   }
 
@@ -186,7 +211,6 @@ function majorName(host, path) {
   foo = major_three_ld_function_map[domain3];
   if (foo) {
       s = foo(host, path);
-    console.log("return " + s);
       return s.toString();
   }
 
