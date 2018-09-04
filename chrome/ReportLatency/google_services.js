@@ -74,13 +74,15 @@ function googleName(host, path) {
   // mostly for redirectors and services that use multiple hostnames
   var foo = google_exact_host_function_map[host];
   if (foo) {
-    return foo(host, path);
+      var s = foo(host, path);
+      return s.toString();
   }
 
   var domain2 = twoLevelDomain(host);
   foo = google_two_ld_function_map[domain2];
-  if (foo) {
-    return foo(host, path);
+    if (foo) {
+	var s = foo(host, path);
+	return s.toString();
   }
 
   return null;

@@ -258,17 +258,36 @@ function aggregateName(encUrl) {
 	var host = (portIndex>=0 ? hostPort.substr(0,portIndex) : hostPort);
 	var path = url.substr(pathIndex + hostIndex + 1);
 
+	var bestname = '.';
+	var bestlen = bestname.length;
+	console.log(bestname + " .length = " + bestname.length);
 	for (var id in serviceGroup) {
+	    console.log("serviceGroup[" + id + "]");
 	    var cb = serviceGroup[id]['callback'];
 	    var name = cb(host, path);
-	    if (name) return name;
+	    if (name) {
+		var len = name.length;
+		console.log(name + " .length = " + len);
+		if (len > bestlen) {
+		    bestname = name;
+		    bestlen = len;
+		    console.log("bestname = " + bestname + " .length=" + bestlen);
+		}
+	    }	
 	}
 
 	if (localStorage['default_as_org'] == 'true') {
-	    return defaultDomain(host);
+	    var name = defaultDomain(host);
+	    var len = name.length;
+	    if (len > bestlen) {
+		bestname = name;
+		bestlen = len;
+	    }
 	}
 
-	return '.';
+	console.log("returning bestname = " + bestname);
+
+	return bestname;
     }
 }
 

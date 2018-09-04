@@ -36,6 +36,10 @@ test('aggregateName', function() {
       'www.google.com',
       'www.google.com');
   equal(aggregateName
+      ('http://www.facebook.com/'),
+      'facebook.com',
+      'facebook.com');
+  equal(aggregateName
       ('http://www.google.com/aclk%3Fsa%3D'),
       'www.google.com/aclk',
       'www.google.com/aclk');

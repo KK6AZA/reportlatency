@@ -15,7 +15,7 @@
 
 TARGETS=ReportLatency.zip ReportLatency.xpi
 GENERATED=eventPage.js options.js
-SHIP=manifest.json icon128.png eventPage.js options.js latencytable.js options.html
+SHIP=manifest.json icon128.png eventPage.js options.js latencytable.js options.html unittests.html
 
 OPTION_SOURCE:=$(shell ls -1 option_*.js 2>/dev/null)
 
