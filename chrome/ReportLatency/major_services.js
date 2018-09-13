@@ -186,6 +186,10 @@ var major_two_ld_function_map = {
     'adafruit.com': twoLevelDomain,
     'sfgate.com': twoLevelDomain,
     'mercurynews.com': twoLevelDomain,
+    'docusign.net': twoLevelDomain,
+    'bamboohr.com': twoLevelDomain,
+    'checkr.com': twoLevelDomain,
+    'concur.com': twoLevelDomain,
 };
 
 var major_two_ld_string_map = {
